@@ -34,6 +34,9 @@ class User extends Entity
         'created' => true,
         'modified' => true,
         'articles' => true,
+        'isActive' => true,
+        'activationToken' => true,
+        'activationTokenExpiry' => true,
     ];
 
     /**
