@@ -20,6 +20,7 @@ class UsersSeed extends BaseSeed
      */
     public function run(): void
     {
+        $table = $this->table('users');
         $this->table('users')->truncate();
         $data = [
             [
@@ -27,6 +28,8 @@ class UsersSeed extends BaseSeed
                 'password' => '$2y$12$PH2tEtbEV0lPQNWgcdkYsOmGaAkk5xtfTq78WD.H0Bl00s.4lzlIe',
                 'created' => date('Y-m-d H:i:s'),
                 'modified' => date('Y-m-d H:i:s'),
+                'role_id' => 1, // Assuming the Admin role has an ID of 1
+                'isActive' => true,
             ],
 
             [
@@ -37,7 +40,7 @@ class UsersSeed extends BaseSeed
             ],
         ];
 
-        $table = $this->table('users');
+       
         $table->insert($data)->save();
     }
 }

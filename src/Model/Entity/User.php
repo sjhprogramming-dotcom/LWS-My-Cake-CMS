@@ -37,6 +37,7 @@ class User extends Entity
         'isActive' => true,
         'activationToken' => true,
         'activationTokenExpiry' => true,
+        'role_id' => true,
     ];
 
     /**

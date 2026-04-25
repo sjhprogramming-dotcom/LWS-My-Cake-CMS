@@ -36,11 +36,30 @@ class UsersController extends AppController
         $this->Authorization->skipAuthorization();
         $result = $this->Authentication->getResult();
 
-        if (!$this->Authentication->getResult()->isValid() && $this->request->getQuery('redirect')) 
+        /* if (!$this->Authentication->getResult()->isValid() && $this->request->getQuery('redirect')) 
             {
          
                 $this->Flash->warning(__('You were logged out due to inactivity. Please log in again to continue.'));
-            }
+            } */
+        
+        
+        //Check the Session
+        $session = $this->request->getSession();
+        if ($session->check('Auth.User')) {
+            $this->Flash->warning(__('You are already logged in.'));
+            return $this->redirect(['controller' => 'Articles', 'action' => 'index']);
+        }   
+
+        
+        if ($session->read('Auth.timeout')) {
+            $this->Flash->warning(
+                __('You were logged out due to inactivity. Please log in again to continue.')
+            );
+            $session->delete('Auth.timeout');
+            return $this->redirect(['controller' => 'Users', 'action' => 'login']);
+        }
+
+        
         // If the user is logged in send them away.
         if ($result && $result->isValid()) {
 
@@ -64,6 +83,7 @@ class UsersController extends AppController
     {
         $this->Authorization->skipAuthorization();
         $this->Authentication->logout();
+        $this->Flash->info(__('You are now logged out.'));
         return $this->redirect(['controller' => 'Users', 'action' => 'login']);
     }
 
@@ -108,6 +128,10 @@ class UsersController extends AppController
 
             $user->activationToken = bin2hex(random_bytes(32)); // Generate a random activation token
             $user->activationTokenExpiry = (new \DateTime())->modify('+2 mins');
+
+            //Make user a "user" by default
+            $user->role_id = 3; // Assuming the "User" role has an ID of 3
+
 
             if ($this->Users->save($user)) {
                     $this->_sendActivationEmail($user);

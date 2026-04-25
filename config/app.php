@@ -421,8 +421,8 @@ return [
         'timeout' => 15,         // 1 minute for testing session expiration and rotation. Change as needed.
         'cookieTimeout' => 15,  // 1 minute cookie timeout. Change as needed.
          'ini' => [
-             'session.cookie_lifetime' => 60, // 60 seconds cookie lifetime. Change as needed.
-             'session.gc_maxlifetime' => 120, // 120 seconds before PHP's session garbage collection kicks in. Change as needed.
+             'session.cookie_lifetime' => 3600, // 60 seconds cookie lifetime. Change as needed.
+             'session.gc_maxlifetime' => 900, // 120 seconds before PHP's session garbage collection kicks in. Change as needed.
          ],
     ],
 

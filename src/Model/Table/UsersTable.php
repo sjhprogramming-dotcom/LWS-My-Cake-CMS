@@ -50,6 +50,11 @@ class UsersTable extends Table
         $this->hasMany('Articles', [
             'foreignKey' => 'user_id',
         ]);
+
+        $this->belongsTo('Roles', [
+            'foreignKey' => 'role_id',
+            'joinType' => 'INNER',
+        ]);
     }
 
     /**
@@ -86,5 +91,11 @@ class UsersTable extends Table
         $rules->add($rules->isUnique(['email']), ['errorField' => 'email']);
 
         return $rules;
+    }
+
+
+    public function findAuthenticatedUser(SelectQuery $query, array $options)
+    {
+        return $query->contain(['Roles']);
     }
 }

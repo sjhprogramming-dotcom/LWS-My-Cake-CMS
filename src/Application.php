@@ -179,6 +179,11 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
             'identifier' => [
                 'className' => 'Authentication.Password',
                 'fields' => $fields,
+                'resolver' => [
+                    'className' => 'Authentication.Orm',
+                    'userModel' => 'Users',
+                    'finder' => 'authenticatedUser', // calls findAuthenticatedUser()
+                ],
             ],
         ]);
 

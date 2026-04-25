@@ -49,8 +49,10 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
             <?= $this->Html->link('Articles', ['controller' => 'Articles', 'action' => 'index']) ?>
             <?= $this->Html->link('Users', ['controller' => 'Users', 'action' => 'index']) ?>
             <?= $this->Html->link('Tags', ['controller' => 'Tags', 'action' => 'index']) ?>
+            <?= $this->Html->link('Roles', ['controller' => 'Roles', 'action' => 'index']) ?>
             <?php if ($isLoggedIn): ?>
-                <?= $this->Html->link('Logged in as ' . $this->request->getAttribute('identity')->get('email'), ['controller' => 'Users', 'action' => 'logout']) ?>
+                <?= $this->Html->link('Logged in as ' . $this->request->getAttribute('identity')->get('email'), ['controller' => 'Users', 
+                        'action' => 'logout']); ?>
             <?php else: ?>
                 <?= $this->Html->link('Login', ['controller' => 'Users', 'action' => 'login']) ?>
             <?php endif; ?>
