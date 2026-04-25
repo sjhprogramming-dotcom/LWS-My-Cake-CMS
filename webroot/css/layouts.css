@@ -1,0 +1,37 @@
+footer {
+    background: var(--bs-cakephpred);
+}
+
+footer li {
+    list-style: none;
+    font-size: 1.2rem;
+}
+
+
+.footer-list li::before {
+    content: "\F2C8";
+    /* Bootstrap Icon Unicode */
+    font-family: "bootstrap-icons";
+    position: absolute;
+    left: 0;
+
+}
+
+
+.divider:after,
+.divider:before {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #eee;
+}
+
+.h-custom {
+    height: calc(100% - 73px);
+}
+
+@media (max-width: 450px) {
+    .h-custom {
+        height: 100%;
+    }
+}

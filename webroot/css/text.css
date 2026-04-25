@@ -1,0 +1,28 @@
+/* CSS Document */
+
+.content h1,
+.content h1,
+.content h2,
+.content h3
+{
+    color: var(--bs-cakephpred);
+}
+
+p
+{
+    color: var(--bs-cakephpblack);
+}
+
+.content-homepage h1,
+.content-homepage h2,
+.content-homepage h3,
+.content-homepage h4
+{
+    color: var(--bs-cakephpblue);
+}
+
+
+.content-homepage p
+{
+    font-size: 1.4rem;
+}

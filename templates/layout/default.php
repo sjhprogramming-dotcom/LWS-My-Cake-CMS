@@ -29,8 +29,17 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     </title>
     <?= $this->Html->meta('icon') ?>
 
-    <?= $this->Html->css(['normalize.min', 'milligram.min', 'fonts', 'cake']) ?>
+    <?= // $this->Html->css(['normalize.min', 'milligram.min', 'fonts', 'cake']) 
+    $this->Html->css(['https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css'])
 
+    ?>
+
+
+    <link rel="stylesheet"
+        href="https://use.fontawesome.com/releases/v6.5.2/css/all.css">
+
+
+    <?= $this->Html->css(['style', 'layouts', 'text']) ?>
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
 
@@ -40,8 +49,10 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->fetch('script') ?>
 </head>
 
-<body>
-    <nav class="top-nav">
+<body class="d-flex flex-column min-vh-100">
+    <?= $this->element('nav-bar/top-nav') ?>
+
+    <!--  <nav class="top-nav">
         <div class="top-nav-title">
             <a href="<?= $this->Url->build('/') ?>"><span>Learn with Steve | Cake</span>PHP</a>
         </div>
@@ -51,8 +62,10 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
             <?= $this->Html->link('Tags', ['controller' => 'Tags', 'action' => 'index']) ?>
             <?= $this->Html->link('Roles', ['controller' => 'Roles', 'action' => 'index']) ?>
             <?php if ($isLoggedIn): ?>
-                <?= $this->Html->link('Logged in as ' . $this->request->getAttribute('identity')->get('email'), ['controller' => 'Users', 
-                        'action' => 'logout']); ?>
+                <?= $this->Html->link('Logged in as ' . $this->request->getAttribute('identity')->get('email'), [
+                    'controller' => 'Users',
+                    'action' => 'logout'
+                ]); ?>
             <?php else: ?>
                 <?= $this->Html->link('Login', ['controller' => 'Users', 'action' => 'login']) ?>
             <?php endif; ?>
@@ -60,42 +73,12 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
             <a target="_blank" rel="noopener" href="https://book.cakephp.org/5/">Documentation</a>
             <a target="_blank" rel="noopener" href="https://api.cakephp.org/">API</a>
         </div>
-    </nav>
-    <main class="main">
-        <div class="container">
-            <?= $this->Flash->render() ?>
-            <?= $this->fetch('content') ?>
-        </div>
+    </nav> -->
+    <main class="flex-fill">
+
+        <?= $this->Flash->render() ?>
+        <?= $this->fetch('content') ?>
+
     </main>
-    <footer>
-        <div class="container" style="margin-top: 4rem;">
-            <p style="text-align: center;">Copyright &copy; <?= date('Y') ?>, Learn with Steve. All rights reserved.</p>
-            <p style="text-align: center;">Powered by <?= $this->Html->link('CakePHP', 'https://cakephp.org') ?>.</p>
-        </div>
-    </footer>
 
-    <!-- Initialize Tagify on the tags input field -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var input = document.querySelector('#tags-input');
-
-            // Initialize Tagify
-            var tagify = new Tagify(input, {
-                delimiters: ",", // comma-separated
-                maxTags: 10,
-                dropdown: {
-                    enabled: 1 // disable suggestions dropdown
-                }
-            });
-
-            // Optional: Listen for tag removal
-            tagify.on('remove', function(e) {
-                console.log("Removed tag:", e.detail.data.value);
-            });
-        });
-    </script>
-
-
-</body>
-
-</html>
+    <?= $this->element('footers/footer') ?>

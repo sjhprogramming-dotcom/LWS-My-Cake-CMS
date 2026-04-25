@@ -135,7 +135,7 @@ class UsersController extends AppController
 
             if ($this->Users->save($user)) {
                     $this->_sendActivationEmail($user);
-                $this->Flash->success(__('The user has been saved.'));
+                $this->Flash->success(__('Your account has been created. Please check your email to activate your account.'));
 
                 return $this->redirect(['action' => 'login']);
             }
