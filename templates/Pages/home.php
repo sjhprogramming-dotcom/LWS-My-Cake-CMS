@@ -23,41 +23,6 @@ use Cake\Error\Debugger;
 use Cake\Http\Exception\NotFoundException;
 
 $this->disableAutoLayout();
-
-$checkConnection = function (string $name) {
-    $error = null;
-    $connected = false;
-    try {
-        ConnectionManager::get($name)->getDriver()->connect();
-        // No exception means success
-        $connected = true;
-    } catch (Exception $connectionError) {
-        $error = $connectionError->getMessage();
-        if (method_exists($connectionError, 'getAttributes')) {
-            $attributes = $connectionError->getAttributes();
-            if (isset($attributes['message'])) {
-                $error .= '<br />' . $attributes['message'];
-            }
-        }
-        if ($name === 'debug_kit') {
-            $error = 'Try adding your current <b>top level domain</b> to the
-                <a href="https://book.cakephp.org/debugkit/5/en/index.html#configuration" target="_blank">DebugKit.safeTld</a>
-            config and reload.';
-            if (!in_array('sqlite', \PDO::getAvailableDrivers())) {
-                $error .= '<br />You need to install the PHP extension <code>pdo_sqlite</code> so DebugKit can work properly.';
-            }
-        }
-    }
-
-    return compact('connected', 'error');
-};
-
-if (!Configure::read('debug')) :
-    throw new NotFoundException(
-        'Please replace templates/Pages/home.php with your own version or re-enable debug mode.'
-    );
-endif;
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -109,7 +74,26 @@ endif;
             <h2> Modified by Steve Houldey for training and education purposes.</h2>
         </div>
     </header>
-    
+    <main>
+        <div class="container">
+            <div class="content">
+                <h2>Getting Started</h2>
+                <p>
+                    This is the home page template for your CakePHP application. You can modify this page to suit your needs.
+                </p>
+                <p>
+                    To get started, you can create new templates in the <code>templates/</code> directory and link to them from this page or other parts of your application.
+                </p>
+                <p>
+                    For example, you could create a new template at <code>templates/Pages/about.php</code> and then link to it like this:
+                </p>
+                <pre><code>&lt;?= $this-&gt;Html-&gt;link('About Us', ['controller' =&gt; 'Pages', 'action' =&gt; 'display', 'about']) ?&gt;</code></pre>
+                <p>
+                    This would create a link to the "About Us" page, which would be rendered using the <code>about.php</code> template.
+                </p>
+            </div>
+        </div>
+    </main>
     <footer>
         <div class="container" style="margin-top: 4rem;">
             <p style="text-align: center;">Copyright &copy; <?= date('Y') ?>, Learn with Steve. All rights reserved.</p>

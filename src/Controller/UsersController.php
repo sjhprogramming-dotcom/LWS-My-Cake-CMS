@@ -28,8 +28,15 @@ class UsersController extends AppController
      */
     public function login()
     {
+
         $this->Authorization->skipAuthorization();
         $result = $this->Authentication->getResult();
+
+        if (!$this->Authentication->getResult()->isValid() && $this->request->getQuery('redirect')) 
+            {
+         
+                $this->Flash->warning(__('You were logged out due to inactivity. Please log in again to continue.'));
+            }
         // If the user is logged in send them away.
         if ($result && $result->isValid()) {
             $target = $this->Authentication->getLoginRedirect() ?? [
