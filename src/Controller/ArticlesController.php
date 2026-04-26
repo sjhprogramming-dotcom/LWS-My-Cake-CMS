@@ -37,6 +37,9 @@ class ArticlesController extends AppController
         $this->Authorization->skipAuthorization();
         $article = $this->Articles->findBySlug($slug)->contain(['Users', 'Tags'])->firstOrFail();
         $this->set(compact('article'));
+
+        //use the article view
+        $this->viewBuilder()->setLayout('MainSite/read-article');
     }
 
     /**

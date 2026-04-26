@@ -10,16 +10,24 @@ $homeUrl = ['controller' => 'Pages', 'action' => 'display', 'home'];
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <?= $this->Html->link('Home', ['controller' => 'Pages', 'action' => 'home'], 
-                    [
-                        'class' => 'nav-link' . $this->Nav->isActive($homeUrl), 
-                        'aria-current' => 'page']) ?>
+                    <?= $this->Html->link(
+                        'Home',
+                        ['controller' => 'Pages', 'action' => 'home'],
+                        [
+                            'class' => 'nav-link' . $this->Nav->isActive($homeUrl),
+                            'aria-current' => 'page'
+                        ]
+                    ) ?>
 
                 </li>
                 <li class="nav-item">
-                    <?= $this->Html->link('Articles', ['controller' => 'Articles', 'action' => 'index'], 
-                    [
-                        'class' => 'nav-link' . $this->Nav->isActive(['controller' => 'Articles'])]) ?>
+                    <?= $this->Html->link(
+                        'Articles',
+                        ['controller' => 'Articles', 'action' => 'index'],
+                        [
+                            'class' => 'nav-link' . $this->Nav->isActive(['controller' => 'Articles'])
+                        ]
+                    ) ?>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -50,6 +58,7 @@ $homeUrl = ['controller' => 'Pages', 'action' => 'display', 'home'];
                         </a>
                         <ul class="dropdown-menu">
                             <li>
+
                                 <a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#logoutModal">
                                     <i class="fa-solid fa-right-from-bracket me-1"></i> Logout
                                 </a>
@@ -58,7 +67,10 @@ $homeUrl = ['controller' => 'Pages', 'action' => 'display', 'home'];
                     </li>
                 <?php else: ?>
                     <li class="nav-item">
-                        <?= $this->Html->link('<i class="bi bi-box-arrow-in-left"></i>Login', ['controller' => 'Users', 'action' => 'login'], ['class' => 'nav-link' . $this->Nav->isActive(['controller' => 'Users', 'action' => 'login']) , 'escape' => false]) ?>
+                        <?= $this->Html->link('<i class="bi bi-box-arrow-in-left"></i> Login', ['controller' => 'Users', 'action' => 'login'], ['class' => 'nav-link' . $this->Nav->isActive(['controller' => 'Users', 'action' => 'login']), 'escape' => false]) ?>
+                    </li>
+                    <li>
+                         <?= $this->Html->link('<i class="bi bi-person-fill-up"></i> Register', ['controller' => 'Users', 'action' => 'add'], ['class' => 'nav-link' . $this->Nav->isActive(['controller' => 'Users', 'action' => 'add']), 'escape' => false]) ?>
                     </li>
                 <?php endif; ?>
         </div>
