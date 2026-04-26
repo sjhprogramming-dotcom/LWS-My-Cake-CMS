@@ -35,7 +35,20 @@ class ArticlesController extends AppController
     public function view(?string $slug): void
     {
         $this->Authorization->skipAuthorization();
-        $article = $this->Articles->findBySlug($slug)->contain(['Users', 'Tags'])->firstOrFail();
+        $article = $this->Articles->findBySlug($slug)->contain(['Users', 'Tags',
+
+            'Comments' => function ($q) {
+                return $q
+                    ->where(['Comments.parent_id IS' => null])
+                    ->orderBy(['Comments.lft' => 'ASC'])
+                    ->contain([
+                        'Users', // ✅ REQUIRED
+                        'ChildComments' => function ($q) {
+                            return $q->contain(['Users']); // ✅ REQUIRED
+                        }
+                    ]);
+            }
+        ])->firstOrFail();
         $this->set(compact('article'));
 
         //use the article view

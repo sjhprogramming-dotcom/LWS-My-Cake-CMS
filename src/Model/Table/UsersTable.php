@@ -55,6 +55,11 @@ class UsersTable extends Table
             'foreignKey' => 'role_id',
             'joinType' => 'INNER',
         ]);
+
+        $this->hasMany('Comments', [
+            'foreignKey' => 'user_id',
+            'dependent' => true,
+        ]);
     }
 
     /**

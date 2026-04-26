@@ -176,6 +176,22 @@
 
                      </div>
 
+                     <div class="card mt-5">
+                         <div class="card-header">
+                             <h4 class="mb-0">Comments</h4>
+                         </div>
+
+                         <div class="card-body">
+                             <?php if (empty($article->comments)): ?>
+                                 <p class="text-muted mb-0">No comments yet.</p>
+                             <?php else: ?>
+                                 <?php foreach ($article->comments as $comment): ?>
+                                     <?= $this->element('/comments/comment', ['comment' => $comment]) ?>
+                                 <?php endforeach; ?>
+                             <?php endif; ?>
+                         </div>
+                     </div>
+
 
                  </article>
 
@@ -192,53 +208,79 @@
                      </div>
 
 
+                 
 
-
-                     <div class="bg-light rounded d-none d-lg-block">
-
-                         <?= $this->fetch('toc') ?>
-                     </div>
-
-
-
-
-                     <div class="p-4">
-                         <!-- Show Archive Data -->
-
-
-
-                     </div>
-
-                     <div class="p-4 mb-3 bg-light rounded">
-                         <h4 class="fst-italic">Elsewhere</h4>
-                         <ol class="list-unstyled">
-                             <li><a href="#">GitHub</a></li>
-                             <li><a href="#">Twitter</a></li>
-                             <li><a href="#">Facebook</a></li>
-                         </ol>
-                     </div>
-
-                     <div class="p-4 mb-5 pn-5 bg-light rounded">
-                         <h4 class="fast-italic">Tag Cloud</h4>
-
-                         <?php if (!empty($article->tags)): ?>
-                             <div class="tag-cloud mt-4">
-                                 <h5>Tags</h5>
-                                 <?php foreach ($article->tags as $tag): ?>
-                                     <?= $this->Html->link(
-                                            h($tag->title),
-                                            ['controller' => 'Articles', 'action' => 'index', '?' => ['tags' => $tag->title]],
-                                            ['class' => 'tag-item']
-                                        ) ?>
-                                 <?php endforeach; ?>
-                             </div>
-                         <?php endif; ?>
-
-
-
-                     </div>
+                 <div>
+                     <h4 class="fst-italic">Recent posts</h4>
+                     <ul class="list-unstyled">
+                         <li> <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-3 link-body-emphasis text-decoration-none border-top" href="#"> <svg aria-hidden="true" class="bd-placeholder-img " height="96" preserveAspectRatio="xMidYMid slice" width="100%" xmlns="http://www.w3.org/2000/svg">
+                                     <rect width="100%" height="100%" fill="#777"></rect>
+                                 </svg>
+                                 <div class="col-lg-8">
+                                     <h6 class="mb-0">Example blog post title</h6> <small class="text-body-secondary">January 15, 2024</small>
+                                 </div>
+                             </a> </li>
+                         <li> <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-3 link-body-emphasis text-decoration-none border-top" href="#"> <svg aria-hidden="true" class="bd-placeholder-img " height="96" preserveAspectRatio="xMidYMid slice" width="100%" xmlns="http://www.w3.org/2000/svg">
+                                     <rect width="100%" height="100%" fill="#777"></rect>
+                                 </svg>
+                                 <div class="col-lg-8">
+                                     <h6 class="mb-0">This is another blog post title</h6> <small class="text-body-secondary">January 14, 2024</small>
+                                 </div>
+                             </a> </li>
+                         <li> <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-3 link-body-emphasis text-decoration-none border-top" href="#"> <svg aria-hidden="true" class="bd-placeholder-img " height="96" preserveAspectRatio="xMidYMid slice" width="100%" xmlns="http://www.w3.org/2000/svg">
+                                     <rect width="100%" height="100%" fill="#777"></rect>
+                                 </svg>
+                                 <div class="col-lg-8">
+                                     <h6 class="mb-0">Longer blog post title: This one has multiple lines!</h6> <small class="text-body-secondary">January 13, 2024</small>
+                                 </div>
+                             </a> </li>
+                     </ul>
                  </div>
+
+                 <div class="bg-light rounded d-none d-lg-block">
+
+                     <?= $this->fetch('toc') ?>
+                 </div>
+
+
+
+
+                 <div class="p-4">
+                     <!-- Show Archive Data -->
+
+
+
+                 </div>
+
+                 <div class="p-4 mb-3 bg-light rounded">
+                     <h4 class="fst-italic">Elsewhere</h4>
+                     <ol class="list-unstyled">
+                         <li><a href="#">GitHub</a></li>
+                         <li><a href="#">Twitter</a></li>
+                         <li><a href="#">Facebook</a></li>
+                     </ol>
+                 </div>
+
+                 <div class="p-4 mb-5 pn-5 bg-light rounded">
+                     <h4 class="fast-italic">Tag Cloud</h4>
+
+                     <?php if (!empty($article->tags)): ?>
+                         <div class="tag-cloud mt-4">
+                             <h5>Tags</h5>
+                             <?php foreach ($article->tags as $tag): ?>
+                                 <?= $this->Html->link(
+                                        h($tag->title),
+                                        ['controller' => 'Articles', 'action' => 'index', '?' => ['tags' => $tag->title]],
+                                        ['class' => 'tag-item']
+                                    ) ?>
+                             <?php endforeach; ?>
+                         </div>
+                     <?php endif; ?>
+                 </div>
+
              </div>
+         </div>
+         </div>
          </div>
 
      </main>
