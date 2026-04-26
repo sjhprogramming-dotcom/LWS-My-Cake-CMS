@@ -1,55 +1,44 @@
 <?php
+
 /**
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\Article> $articles
  */
 ?>
-<div class="articles index content">
-    <?= $this->Html->link(__('New Article'), ['action' => 'add'], ['class' => 'button float-right']) ?>
-    <h3><?= __('Articles') ?></h3>
-    <div class="table-responsive">
-        <table>
-            <thead>
-                <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
-                    <th><?= $this->Paginator->sort('user_id') ?></th>
-                    <th><?= $this->Paginator->sort('title') ?></th>
-                    <th><?= $this->Paginator->sort('slug') ?></th>
-                    <th><?= $this->Paginator->sort('published') ?></th>
-                    <th><?= $this->Paginator->sort('created') ?></th>
-                    <th><?= $this->Paginator->sort('modified') ?></th>
-                    <th class="actions"><?= __('Actions') ?></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($articles as $article): ?>
-                <tr>
-                    <td><?= $this->Number->format($article->id) ?></td>
-                    <td><?= $article->hasValue('user') ? $this->Html->link($article->user->email, ['controller' => 'Users', 'action' => 'view', $article->user->id]) : '' ?></td>
-                    <td><?= h($article->title) ?></td>
-                    <td><?= h($article->slug) ?></td>
-                    <td><?= h($article->published) ?></td>
-                    <td><?= h($article->created) ?></td>
-                    <td><?= h($article->modified) ?></td>
-                    <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $article->slug]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $article->slug]) ?>
-                        <?= $this->Form->postLink(
-                            __('Delete'),
-                            ['action' => 'delete', $article->slug],
-                            [
-                                'method' => 'delete',
-                                'confirm' => __('Are you sure you want to delete Article: {0}?', $article->slug),
-                            ]
-                        ) ?>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+
+<div class="articles container content">
+    <div class="row">
+        <div class="col-md-12 mt-5 py-3 text-center">
+            <h2><?= __('Our Articles') ?></h2>
+
+        </div>
     </div>
-    <div class="paginator">
-        <ul class="pagination">
+
+    <div class="row mb-4 mt-3 py-3">
+        <?php foreach ($articles as $article): ?>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <?= $this->Html->image('home/AdobeStock_153503397.png', ['class' => 'card-img-top', 'alt' => $article->title]) ?>
+                    <div class="card-body">
+                        <h5 class="card-title"><?= h($article->title) ?></h5>
+                        <p class="card-text">
+                            <?= $this->Text->truncate($article->body, 100, [
+                                'ellipsis' => '...',
+                                'exact' => false,
+                            ])?>
+                        </p>
+                        <?= $this->Html->link(__('Read More'), ['action' => 'view', $article->slug], ['class' => 'btn btn-primary']) ?>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+
+
+    <div class="paginator justify-content-center text-center mt-5">
+        <hr>
+        <ul class="pagination justify-content-center">
+
             <?= $this->Paginator->first('<< ' . __('first')) ?>
             <?= $this->Paginator->prev('< ' . __('previous')) ?>
             <?= $this->Paginator->numbers() ?>
@@ -58,4 +47,6 @@
         </ul>
         <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
     </div>
+
+
 </div>

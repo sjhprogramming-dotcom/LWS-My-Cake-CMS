@@ -35,3 +35,29 @@ footer li {
         height: 100%;
     }
 }
+
+
+.navbar-nav .nav-link {
+    position: relative;
+
+}
+
+.navbar-nav .nav-link.active {
+    
+    color: white !important;
+    border-bottom: var(--bs-cakephpblue) 2px solid;
+    border-radius: .25rem;
+    padding: .5rem .75rem;
+}
+
+.navbar-nav .nav-link.active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 2px;
+    background: currentColor;
+    border-radius: 2px;
+    border-color: var(--bs-cakephpblue);
+}

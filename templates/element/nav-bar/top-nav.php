@@ -1,3 +1,6 @@
+<?php
+$homeUrl = ['controller' => 'Pages', 'action' => 'display', 'home'];
+?>
 <nav class="sticky-top navbar navbar-expand-lg bg-cakephpred navbar-dark">
     <div class="container">
         <a class="navbar-brand" href="#">Navbar</a>
@@ -7,11 +10,16 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <?= $this->Html->link('Home', ['controller' => 'Pages', 'action' => 'home'], ['class' => 'nav-link active', 'aria-current' => 'page']) ?>
+                    <?= $this->Html->link('Home', ['controller' => 'Pages', 'action' => 'home'], 
+                    [
+                        'class' => 'nav-link' . $this->Nav->isActive($homeUrl), 
+                        'aria-current' => 'page']) ?>
 
                 </li>
                 <li class="nav-item">
-                    <?= $this->Html->link('Articles', ['controller' => 'Articles', 'action' => 'index'], ['class' => 'nav-link']) ?>
+                    <?= $this->Html->link('Articles', ['controller' => 'Articles', 'action' => 'index'], 
+                    [
+                        'class' => 'nav-link' . $this->Nav->isActive(['controller' => 'Articles'])]) ?>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -50,7 +58,7 @@
                     </li>
                 <?php else: ?>
                     <li class="nav-item">
-                        <?= $this->Html->link('<i class="bi bi-box-arrow-in-left"></i>Login', ['controller' => 'Users', 'action' => 'login'], ['class' => 'nav-link', 'escape' => false]) ?>
+                        <?= $this->Html->link('<i class="bi bi-box-arrow-in-left"></i>Login', ['controller' => 'Users', 'action' => 'login'], ['class' => 'nav-link' . $this->Nav->isActive(['controller' => 'Users', 'action' => 'login']) , 'escape' => false]) ?>
                     </li>
                 <?php endif; ?>
         </div>
