@@ -62,4 +62,12 @@ class User extends Entity
         }
         return null;
     }
+
+    
+protected function _getIsAdmin(): bool
+    {
+        return (bool)$this->role?->isAdmin;
+    }
+
+
 }

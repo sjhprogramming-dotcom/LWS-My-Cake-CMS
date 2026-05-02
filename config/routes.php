@@ -72,6 +72,14 @@ return function (RouteBuilder $routes): void {
         });
 
 
+        $builder->prefix('Admin', function (RouteBuilder $routes) {
+            // /admin -> Admin/DashboardController::index()
+            $routes->connect('/', ['controller' => 'Dashboard', 'action' => 'index']);
+
+            // Conventional routes inside /admin
+            $routes->fallbacks();
+        });
+
         /*
          * Connect catchall routes for all controllers.
          *

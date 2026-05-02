@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -14,7 +15,8 @@ declare(strict_types=1);
  * @since     0.2.9
  * @license   https://opensource.org/licenses/mit-license.php MIT License
  */
-namespace App\Controller;
+
+namespace App\Controller\Admin;
 
 use Cake\Controller\Controller;
 
@@ -43,28 +45,23 @@ class AppController extends Controller
 
         $this->loadComponent('Flash');
         $this->loadComponent('Authentication.Authentication');
-        $this->loadComponent('Authorization.Authorization', [
-            'skipAuthorization' => ['display', 'index'],
-        ]);
+        $this->loadComponent('Authorization.Authorization');
         /*
          * Enable the following component for recommended CakePHP form protection settings.
          * see https://book.cakephp.org/5/en/controllers/components/form-protection.html
          */
         $this->loadComponent('FormProtection');
+
+        $this->viewBuilder()->setLayout('admin');
     }
 
     // in src/Controller/AppController.php
     public function beforeFilter(\Cake\Event\EventInterface $event): void
     {
         parent::beforeFilter($event);
-        // for all controllers in our application, make index and view
-        // actions public, skipping the authentication check
-        $this->Authentication->allowUnauthenticated(['index', 'view', 'display']);
 
-        $identity = $this->request->getAttribute('identity');
+        $this->Authorization->authorize($this->request, 'access');
         //See if the user is logged in so we can display the appropriate links in the header.
         $this->set('isLoggedIn', $this->request->getAttribute('identity') !== null);
-        $this->set('isAdminUser', $identity?->get('is_admin') !== null);
     }
-
 }

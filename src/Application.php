@@ -43,8 +43,10 @@ use Authorization\AuthorizationService;
 use Authorization\AuthorizationServiceInterface;
 use Authorization\AuthorizationServiceProviderInterface;
 use Authorization\Middleware\AuthorizationMiddleware;
+use Authorization\Policy\MapResolver;
 use Authorization\Policy\OrmResolver;
-
+use Authorization\Policy\ResolverCollection;
+use Cake\Http\ServerRequest;
 
 /**
  * Application setup class.
@@ -192,7 +194,14 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
 
     public function getAuthorizationService(ServerRequestInterface $request): AuthorizationServiceInterface
     {
-        $resolver = new OrmResolver();
+        $resolver = new ResolverCollection([
+            new MapResolver(
+                [
+                    ServerRequest::class => \App\Policy\ServerRequestPolicy::class,
+                ]),
+            
+            new OrmResolver(),
+        ]);
 
         return new AuthorizationService($resolver);
     }
