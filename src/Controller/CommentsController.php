@@ -31,7 +31,7 @@ class CommentsController extends AppController
     public function index()
     {
         $query = $this->Comments->find()
-            ->contain(['Articles', 'Users', 'ParentComments']);
+            ->contain(['Articles', 'Users', 'ParentComments', 'ChildComments']);
         $query = $this->Authorization->applyScope($query);
         $comments = $this->paginate($query);
 
@@ -75,6 +75,65 @@ class CommentsController extends AppController
         $users = $this->Comments->Users->find('list', limit: 200)->all();
         $parentComments = $this->Comments->ParentComments->find('list', limit: 200)->all();
         $this->set(compact('comment', 'articles', 'users', 'parentComments'));
+    }
+
+    /**
+     * Add new thread method
+     *
+     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     */
+    public function addNewThread($articleId = null)
+    {
+
+
+        $comment = $this->Comments->newEmptyEntity();
+        $this->Authorization->authorize($comment);
+        if ($this->request->is('post')) {
+            $comment = $this->Comments->patchEntity($comment, $this->request->getData());
+
+            //Get User Signed in Data
+            $comment->user_id = $this->request
+                ->getAttribute('identity')
+                ->getIdentifier();
+
+            //Get the ID of the article being commented on.
+            $comment->article_id = $articleId;
+
+
+
+            if ($this->Comments->save($comment)) {
+                $this->Flash->success(__('The comment has been saved.'));
+
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('The comment could not be saved. Please, try again.'));
+        }
+        $articles = $this->Comments->Articles->find('list', limit: 200)->all();
+        $users = $this->Comments->Users->find('list', limit: 200)->all();
+        $parentComments = $this->Comments->ParentComments->find('list', limit: 200)->all();
+        $this->set(compact('comment', 'articles', 'users', 'parentComments'));
+    }
+
+    public function reply()
+    {
+        $comment = $this->Comments->newEmptyEntity();
+        $this->Authorization->authorize($comment);
+        if ($this->request->is('post')) {
+            $comment = $this->Comments->patchEntity($comment, $this->request->getData());
+            //Get User Signed in Data
+            $comment->user_id = $this->request
+                ->getAttribute('identity')
+                ->getIdentifier();
+
+
+            if ($this->Comments->save($comment)) {
+                $this->Flash->success('Reply posted.');
+            } else {
+                $this->Flash->error('Could not save reply.');
+            }
+        }
+
+        return $this->redirect($this->referer());
     }
 
     /**

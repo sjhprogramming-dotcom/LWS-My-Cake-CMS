@@ -20,6 +20,7 @@ class CommentPolicy
      */
     public function canAdd(IdentityInterface $user, Comment $comment)
     {
+        return true;
     }
 
     /**
@@ -31,6 +32,7 @@ class CommentPolicy
      */
     public function canEdit(IdentityInterface $user, Comment $comment)
     {
+        return true;
     }
 
     /**
@@ -52,6 +54,17 @@ class CommentPolicy
      * @return bool
      */
     public function canView(IdentityInterface $user, Comment $comment)
+    {
+        return true;
+    }
+
+    public function canAddNewThread(IdentityInterface $user, Comment $comment)
+    {
+        return true;
+    }
+
+
+    public function canReply(IdentityInterface $user, Comment $comment)
     {
         return true;
     }

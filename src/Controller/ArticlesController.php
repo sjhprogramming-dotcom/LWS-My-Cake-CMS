@@ -36,20 +36,23 @@ class ArticlesController extends AppController
     {
         $this->Authorization->skipAuthorization();
         $article = $this->Articles->findBySlug($slug)->contain(['Users', 'Tags',
-
-            'Comments' => function ($q) {
-                return $q
-                    ->where(['Comments.parent_id IS' => null])
-                    ->orderBy(['Comments.lft' => 'ASC'])
-                    ->contain([
-                        'Users', // ✅ REQUIRED
-                        'ChildComments' => function ($q) {
-                            return $q->contain(['Users']); // ✅ REQUIRED
-                        }
-                    ]);
-            }
+                                
         ])->firstOrFail();
-        $this->set(compact('article'));
+
+
+        $comments = $this->Articles->Comments
+            ->find('threaded')
+            ->where(['Comments.article_id' => $article->id])
+            ->contain(['Users'])
+            ->orderAsc('Comments.lft')
+            ->all();
+
+
+        $newComment = $this->Articles->Comments->newEmptyEntity();
+        $replyComment = $this->Articles->Comments->newEmptyEntity();
+       //$comment = $this->Articles->Comments->patchEntity($comment, $this->request->getData());;
+
+        $this->set(compact('article','comments', 'newComment', 'replyComment'));
 
         //use the article view
         $this->viewBuilder()->setLayout('MainSite/read-article');

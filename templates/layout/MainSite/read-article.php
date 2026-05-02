@@ -13,6 +13,9 @@
      * @since         0.10.0
      * @license       https://opensource.org/licenses/mit-license.php MIT License
      * @var \App\View\AppView $this
+     * @var \App\Model\Entity\Article $article
+     * @var \App\Model\Entity\Comment $newComment
+     * 
      */
 
     $cakeDescription = 'CakePHP: the rapid development php framework';
@@ -182,17 +185,49 @@
                          </div>
 
                          <div class="card-body">
-                             <?php if (empty($article->comments)): ?>
+                             <?php if (empty($comments)): ?>
                                  <p class="text-muted mb-0">No comments yet.</p>
                              <?php else: ?>
-                                 <?php foreach ($article->comments as $comment): ?>
+                                 <?php foreach ($comments as $comment): ?>
                                      <?= $this->element('/comments/comment', ['comment' => $comment]) ?>
                                  <?php endforeach; ?>
                              <?php endif; ?>
                          </div>
+
+
                      </div>
+                     <div class="card mt-5">
+                         <div class="card-header">
+                             <h4>Post a Comment</h4>
+                         </div>
+                         <div class="card-body">
+                             <?php
+                                echo $this->Form->create($newComment, [
+                                    'url' => [
+                                        'controller' => 'Comments',
+                                        'action' => 'addNewThread',
+                                        $article->id,
+                                    ]
+                                ]);
+                                echo $this->Form->control('title', [
+                                    'class' => 'form-control',
+                                    'label' => 'Thread Title',
+                                    'required' => true,
 
+                                ]);
+                                echo $this->Form->control('body', [
+                                    'class' => 'form-control',
+                                    'label' => 'Thread Comment',
+                                    'required' => true
+                                ]);
+                                echo $this->Form->submit('Post Comment', [
+                                    'class' => 'btn btn-cakephpred mt-3'
+                                ]);
+                                echo $this->Form->end();
 
+                                ?>
+                         </div>
+                     </div>
                  </article>
 
              </div>
@@ -208,55 +243,55 @@
                      </div>
 
 
-                 
 
-                 <div>
-                   <?= $this->cell('Recentarticles') ?>
+
+                     <div>
+                         <?= $this->cell('Recentarticles') ?>
+                     </div>
+
+                     <div class="bg-light rounded d-none d-lg-block">
+
+                         <?= $this->fetch('toc') ?>
+                     </div>
+
+
+
+
+                     <div class="p-4">
+                         <!-- Show Archive Data -->
+
+
+
+                     </div>
+
+                     <div class="p-4 mb-3 bg-light rounded">
+                         <h4 class="fst-italic">Elsewhere</h4>
+                         <ol class="list-unstyled">
+                             <li><a href="#">GitHub</a></li>
+                             <li><a href="#">Twitter</a></li>
+                             <li><a href="#">Facebook</a></li>
+                         </ol>
+                     </div>
+
+                     <div class="p-4 mb-5 pn-5 bg-light rounded">
+                         <h4 class="fast-italic">Tag Cloud</h4>
+
+                         <?php if (!empty($article->tags)): ?>
+                             <div class="tag-cloud mt-4">
+                                 <h5>Tags</h5>
+                                 <?php foreach ($article->tags as $tag): ?>
+                                     <?= $this->Html->link(
+                                            h($tag->title),
+                                            ['controller' => 'Articles', 'action' => 'index', '?' => ['tags' => $tag->title]],
+                                            ['class' => 'tag-item']
+                                        ) ?>
+                                 <?php endforeach; ?>
+                             </div>
+                         <?php endif; ?>
+                     </div>
+
                  </div>
-
-                 <div class="bg-light rounded d-none d-lg-block">
-
-                     <?= $this->fetch('toc') ?>
-                 </div>
-
-
-
-
-                 <div class="p-4">
-                     <!-- Show Archive Data -->
-
-
-
-                 </div>
-
-                 <div class="p-4 mb-3 bg-light rounded">
-                     <h4 class="fst-italic">Elsewhere</h4>
-                     <ol class="list-unstyled">
-                         <li><a href="#">GitHub</a></li>
-                         <li><a href="#">Twitter</a></li>
-                         <li><a href="#">Facebook</a></li>
-                     </ol>
-                 </div>
-
-                 <div class="p-4 mb-5 pn-5 bg-light rounded">
-                     <h4 class="fast-italic">Tag Cloud</h4>
-
-                     <?php if (!empty($article->tags)): ?>
-                         <div class="tag-cloud mt-4">
-                             <h5>Tags</h5>
-                             <?php foreach ($article->tags as $tag): ?>
-                                 <?= $this->Html->link(
-                                        h($tag->title),
-                                        ['controller' => 'Articles', 'action' => 'index', '?' => ['tags' => $tag->title]],
-                                        ['class' => 'tag-item']
-                                    ) ?>
-                             <?php endforeach; ?>
-                         </div>
-                     <?php endif; ?>
-                 </div>
-
              </div>
-         </div>
          </div>
          </div>
 
@@ -273,5 +308,24 @@
                  el.style.backgroundSize = 'cover';
                  el.style.backgroundPosition = 'center';
              }
+         });
+     </script>
+
+
+
+
+
+     <script>
+         document.addEventListener('DOMContentLoaded', function() {
+             document.querySelectorAll('.reply-toggle').forEach(function(link) {
+                 link.addEventListener('click', function(e) {
+                     e.preventDefault();
+
+                     const commentId = this.dataset.commentId;
+                     const form = document.getElementById('reply-form-' + commentId);
+
+                     form.classList.toggle('d-none');
+                 });
+             });
          });
      </script>
