@@ -32,6 +32,18 @@ class DashboardController extends AppController
     public function index()
     {
 
+        // Replace with real queries later:
+        $stats = [
+            'articles' => 24,
+            'categories' => 8,
+            'tags' => 53,
+            'galleries' => 6,
+            'users' => 128,
+        ];
+
+        $this->set(compact('stats'));
+
+
         $usersTable = $this->fetchTable('Users');
 
         $userCount = $usersTable->find()->count();
