@@ -18,7 +18,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use Cake\Controller\Controller;
+use App\Controller\AppController as BaseAppController;
+use Cake\Event\EventInterface;
 
 /**
  * Application Controller
@@ -28,7 +29,7 @@ use Cake\Controller\Controller;
  *
  * @link https://book.cakephp.org/5/en/controllers.html#the-app-controller
  */
-class AppController extends Controller
+class AppController extends BaseAppController
 {
     /**
      * Initialization hook method.

@@ -47,7 +47,9 @@ use Authorization\Policy\MapResolver;
 use Authorization\Policy\OrmResolver;
 use Authorization\Policy\ResolverCollection;
 use Cake\Http\ServerRequest;
-
+use Authorization\Exception\ForbiddenException;
+use Authorization\Exception\MissingIdentityException;
+use Cake\Routing\Router;
 /**
  * Application setup class.
  *
@@ -111,7 +113,20 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
             ->add(new AuthenticationMiddleware($this))
 
             // Add the AuthorizationMiddleware. It should be after AuthenticationMiddleware.
-            ->add(new AuthorizationMiddleware($this))
+
+            ->add(new AuthorizationMiddleware($this, [
+                'unauthorizedHandler' => [
+                    'className' => 'Authorization.Redirect',
+                    'url' => Router::url('/users/login'),
+                      
+                    'queryParam' => 'redirect',
+                    'exceptions' => [
+                        MissingIdentityException::class,
+                        ForbiddenException::class,
+                    ],
+                ],
+            ]))
+
             // Cross Site Request Forgery (CSRF) Protection Middleware
             // https://book.cakephp.org/5/en/security/csrf.html#cross-site-request-forgery-csrf-middleware
             ->add(new CsrfProtectionMiddleware([

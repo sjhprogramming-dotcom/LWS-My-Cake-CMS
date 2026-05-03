@@ -1,6 +1,12 @@
 <?php
-$homeUrl = ['controller' => 'Pages', 'action' => 'display', 'home'];
+$homeUrl = ['controller' => 'Pages', 'action' => 'display', 'home', 'prefix' => false];
+
+
 ?>
+<?php
+/** @var \Authentication\View\Helper\IdentityHelper $this->Identity */
+?>
+
 <nav class="sticky-top navbar navbar-expand-lg bg-cakephpred navbar-dark">
     <div class="container">
         <a class="navbar-brand" href="#">Navbar</a>
@@ -12,7 +18,7 @@ $homeUrl = ['controller' => 'Pages', 'action' => 'display', 'home'];
                 <li class="nav-item">
                     <?= $this->Html->link(
                         'Home',
-                        ['controller' => 'Pages', 'action' => 'home'],
+                        ['controller' => 'Pages', 'action' => 'home', 'prefix' => false],
                         [
                             'class' => 'nav-link' . $this->Nav->isActive($homeUrl),
                             'aria-current' => 'page'
@@ -57,6 +63,20 @@ $homeUrl = ['controller' => 'Pages', 'action' => 'display', 'home'];
                             <i class="bi bi-person-circle"></i> <?= $this->request->getAttribute('identity')->get('email') ?>
                         </a>
                         <ul class="dropdown-menu">
+                            <?php if ($isAdminUser): ?>
+                                <li>
+                                    <?= $this->Html->link('Admin Center', [
+                                        'prefix' => 'Admin',
+                                        'controller' => 'Dashboard',
+                                        'action' => 'index',
+                                    ], [
+                                        'class' => 'dropdown-item',
+                                    ]) ?>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                            <?php endif ?>
                             <li>
 
                                 <a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#logoutModal">
@@ -70,7 +90,7 @@ $homeUrl = ['controller' => 'Pages', 'action' => 'display', 'home'];
                         <?= $this->Html->link('<i class="bi bi-box-arrow-in-left"></i> Login', ['controller' => 'Users', 'action' => 'login'], ['class' => 'nav-link' . $this->Nav->isActive(['controller' => 'Users', 'action' => 'login']), 'escape' => false]) ?>
                     </li>
                     <li>
-                         <?= $this->Html->link('<i class="bi bi-person-fill-up"></i> Register', ['controller' => 'Users', 'action' => 'add'], ['class' => 'nav-link' . $this->Nav->isActive(['controller' => 'Users', 'action' => 'add']), 'escape' => false]) ?>
+                        <?= $this->Html->link('<i class="bi bi-person-fill-up"></i> Register', ['controller' => 'Users', 'action' => 'add'], ['class' => 'nav-link' . $this->Nav->isActive(['controller' => 'Users', 'action' => 'add']), 'escape' => false]) ?>
                     </li>
                 <?php endif; ?>
         </div>

@@ -41,8 +41,13 @@ class UsersController extends AppController
          
                 $this->Flash->warning(__('You were logged out due to inactivity. Please log in again to continue.'));
             } */
-        
-        
+
+
+        if ($this->request->getQuery('redirect')) {
+            $this->Flash->error(__('You are not authorised to access that page.'));
+        }
+
+
         //Check the Session
         $session = $this->request->getSession();
         if ($session->check('Auth.User')) {

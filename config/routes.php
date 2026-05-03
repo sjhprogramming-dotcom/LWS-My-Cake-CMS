@@ -71,6 +71,12 @@ return function (RouteBuilder $routes): void {
             $builder->connect('/tagged/*', ['controller' => 'Articles', 'action' => 'tags']);
         });
 
+        $builder->connect('/users/login', [
+            'controller' => 'Users',
+            'action' => 'login',
+            'Prefix' => false,
+            'plugin' => null
+        ]);
 
         $builder->prefix('Admin', function (RouteBuilder $routes) {
             // /admin -> Admin/DashboardController::index()

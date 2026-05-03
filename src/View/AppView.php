@@ -25,6 +25,12 @@ use Cake\View\View;
  * @link https://book.cakephp.org/5/en/views.html#the-app-view
  * @extends \Cake\View\View<\App\View\AppView>
  */
+
+
+/**
+ * @property \Authentication\View\Helper\IdentityHelper $Identity
+ */
+
 class AppView extends View
 {
     /**
@@ -38,6 +44,7 @@ class AppView extends View
      */
     public function initialize(): void
     {
+        $this->loadHelper('Authentication.Identity');
         // Pagination templates
         $this->Paginator->setTemplates([
             'number' => '<li class="page-item"><a class="page-link" href="{{url}}">{{text}}</a></li>',

@@ -65,6 +65,7 @@ class AppController extends Controller
         //See if the user is logged in so we can display the appropriate links in the header.
         $this->set('isLoggedIn', $this->request->getAttribute('identity') !== null);
         $this->set('isAdminUser', $identity?->get('is_admin') !== null);
+        
     }
 
 }

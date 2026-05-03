@@ -19,7 +19,7 @@
                 ?>
                 <?= $this->Form->postLink(
                     'Logout',
-                    ['controller' => 'Users', 'action' => 'logout'],
+                    ['controller' => 'Users', 'action' => 'logout', 'prefix' => false],
                     [
                         'class' => 'btn btn-cakephpred',
                         'confirm' => false
