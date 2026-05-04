@@ -5,4 +5,4 @@
  * @var \App\Model\Entity\Article $article
  */
 ?>
-<?= h($article->body) ?>
+<?= $article->body ?>

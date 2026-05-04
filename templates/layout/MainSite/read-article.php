@@ -59,14 +59,46 @@
          href="https://use.fontawesome.com/releases/v6.5.2/css/all.css">
 
 
+
+
      <?= $this->Html->css(['style', 'layouts', 'text']) ?>
      <?= $this->fetch('meta') ?>
      <?= $this->fetch('css') ?>
+
+     <!-- Prism core -->
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism.min.css">
+     <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
+
+     <!-- Language dependencies (REQUIRED ORDER) -->
+     <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-markup.min.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-clike.min.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-markup-templating.min.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-php.min.js"></script>
+
+     <!-- Line numbers -->
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.css">
+     <script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.js"></script>
+
+     <!-- Toolbar + copy -->
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs/plugins/toolbar/prism-toolbar.css">
+     <script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/toolbar/prism-toolbar.min.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
 
      <!-- Tagify CSS and JS from CDN -->
      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css">
      <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
      <?= $this->fetch('script') ?>
+
+     <style>
+         pre[class*="language-"] {
+             counter-reset: line;
+         }
+
+         pre[class*="language-"].line-numbers {
+             padding-left: 3.8em;
+         }
+     </style>
+
 
 
  </head>
@@ -121,7 +153,11 @@
                              <?= $this->Flash->render('modal_success') ?>
                          </div>
 
-                         <?= $this->fetch('content') ?>
+                         <?= str_replace(
+                                '<pre class="language-',
+                                '<pre class="line-numbers language-',
+                                $this->fetch('content')
+                            ) ?>
 
 
                      </div>

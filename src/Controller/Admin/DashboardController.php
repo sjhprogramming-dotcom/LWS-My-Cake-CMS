@@ -34,20 +34,15 @@ class DashboardController extends AppController
 
         // Replace with real queries later:
         $stats = [
-            'articles' => 24,
+            'articles' => $this->fetchTable('Articles')->find()->count(),
             'categories' => 8,
-            'tags' => 53,
+            'tags' => $this->fetchTable('Tags')->find()->count(),
             'galleries' => 6,
-            'users' => 128,
+            'users' => $this->fetchTable('Users')->find()->count()
         ];
 
         $this->set(compact('stats'));
 
-
-        $usersTable = $this->fetchTable('Users');
-
-        $userCount = $usersTable->find()->count();
-        $this->set(compact('userCount'));
     }
 
     /**

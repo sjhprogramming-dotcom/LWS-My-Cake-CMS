@@ -206,6 +206,75 @@ $menu = [
 
     <!-- Bootstrap 5.3 JS bundle -->
     <?= $this->Html->script('https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js') ?>
+
+    <!-- TinyMCE self-hosted via jsDelivr (no 1000-load cloud cap) -->
+    <script src="https://cdn.jsdelivr.net/npm/tinymce@8.4.0/tinymce.min.js"></script>
+
+    <!-- Prism (required to highlight code blocks created by codesample) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
+
+    <!-- Optional: load extra Prism languages if you need them -->
+    <!-- e.g. PHP, Python, Bash etc. (Prism supports add-on language components) -->
+
+
+
+
+
+
+    <script>
+        tinymce.init({
+            selector: 'textarea#article-body',
+
+            // Required for self-hosted TinyMCE 8+ under GPL
+            license_key: 'gpl', // [3](https://www.tiny.cloud/docs/tinymce/latest/license-key/)
+
+            height: 520,
+            menubar: true,
+
+            // Code blocks + HTML source view
+            plugins: 'codesample code link lists table image',
+            toolbar: [
+                'undo redo | blocks | bold italic underline | alignleft aligncenter alignright | bullist numlist',
+                'link image table | codesample | code | removeformat'
+            ],
+
+            // (Optional) restrict which languages appear in the code block dialog
+            // TinyMCE codesample supports a default set of languages; you can override it.
+            // [1](https://www.tiny.cloud/docs/tinymce/latest/codesample/)
+            codesample_languages: [{
+                    text: 'HTML/XML',
+                    value: 'markup'
+                },
+                {
+                    text: 'JavaScript',
+                    value: 'javascript'
+                },
+                {
+                    text: 'CSS',
+                    value: 'css'
+                },
+                {
+                    text: 'PHP',
+                    value: 'php'
+                },
+                {
+                    text: 'Python',
+                    value: 'python'
+                },
+                {
+                    text: 'Bash',
+                    value: 'bash'
+                }
+            ],
+
+            // Make pasted code behave nicely
+            paste_as_text: false,
+
+            // Optional: turn off upgrade/promotional UI if you ever see it
+            // promotion: false
+        });
+    </script>
 </body>
 
 </html>
