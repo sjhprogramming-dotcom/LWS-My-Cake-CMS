@@ -62,7 +62,12 @@ return function (RouteBuilder $routes): void {
          */
         $builder->connect('/pages/*', 'Pages::display');
 
+        $builder->scope('/', function (\Cake\Routing\RouteBuilder $builder) {
+            $builder->connect('/install', ['controller' => 'Install', 'action' => 'index']);
+            $builder->connect('/install/run', ['controller' => 'Install', 'action' => 'run'])->setMethods(['POST']);
 
+            // your existing routes...
+        });
         // Add this
         // New route we're adding for our tagged action.
         // The trailing `*` tells CakePHP that this action has
@@ -86,6 +91,8 @@ return function (RouteBuilder $routes): void {
             $routes->fallbacks();
         });
 
+
+      
         /*
          * Connect catchall routes for all controllers.
          *

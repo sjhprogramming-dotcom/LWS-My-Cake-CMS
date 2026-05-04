@@ -50,6 +50,8 @@ use Cake\Http\ServerRequest;
 use Authorization\Exception\ForbiddenException;
 use Authorization\Exception\MissingIdentityException;
 use Cake\Routing\Router;
+
+use App\Middleware\InstalledMiddleware;
 /**
  * Application setup class.
  *
@@ -70,7 +72,14 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
     {
         // Call parent to load bootstrap from files.
         parent::bootstrap();
+
+
+       
+
         $this->addPlugin('Authorization');
+
+       
+
         // By default, does not allow fallback classes.
         FactoryLocator::add('Table', (new TableLocator())->allowFallbackClass(false));
     }
@@ -98,6 +107,7 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
                 'cacheTime' => Configure::read('Asset.cacheTime'),
             ]))
 
+            ->add(new InstalledMiddleware())
             // Add routing middleware.
             // If you have a large number of routes connected, turning on routes
             // caching in production could improve performance.
@@ -114,8 +124,25 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
 
             // Add the AuthorizationMiddleware. It should be after AuthenticationMiddleware.
 
+
+
+
+            
             ->add(new AuthorizationMiddleware($this, [
-                'unauthorizedHandler' => [
+
+
+            'skipAuthorization' => function (ServerRequestInterface $request) {
+                $path = $request->getUri()->getPath();
+
+                // ✅ Installer routes
+                if (str_starts_with($path, '/install')) {
+                    return true;
+                }
+
+                return false;
+            },
+
+            'unauthorizedHandler' => [
                     'className' => 'Authorization.Redirect',
                     'url' => Router::url('/users/login'),
                       
@@ -127,12 +154,26 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
                 ],
             ]))
 
+        
+
             // Cross Site Request Forgery (CSRF) Protection Middleware
             // https://book.cakephp.org/5/en/security/csrf.html#cross-site-request-forgery-csrf-middleware
             ->add(new CsrfProtectionMiddleware([
                 'httponly' => true,
-            ]));
+                                
+                'skipCheck' => function (ServerRequestInterface $request) {
+                        $path = $request->getUri()->getPath();
 
+                        // ✅ Allow installer POSTs
+                        if (str_starts_with($path, '/install')) {
+                            return true;
+                        }
+
+                        return false;
+                    },
+
+            ]));
+            
         return $middlewareQueue;
     }
 
@@ -165,7 +206,34 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
 
     public function getAuthenticationService(ServerRequestInterface $request): AuthenticationServiceInterface
     {
+
+
+        // ✅ DEFINE $path (this is what you were missing)
+        $path = $request->getUri()->getPath();
+        // (Alternative that also works: $path = $request->getPath(); )
+
         $service = new AuthenticationService();
+
+
+        // ✅ ALWAYS load at least one authenticator
+        // Required by AuthenticationMiddleware
+        $service->loadAuthenticator('Authentication.Session');
+
+        // ✅ Installer routes: no redirect, no enforced login
+        if (str_starts_with($path, '/install')) {
+            $service->setConfig([
+                'unauthenticatedRedirect' => null,
+                'queryParam' => null,
+            ]);
+
+            return $service;
+        }
+
+
+        // ✅ Skip authentication completely for installer
+        if (str_starts_with($path, '/install')) {
+            return $service;
+        }
 
         // Define where users should be redirected to when they are not authenticated
         $service->setConfig([
